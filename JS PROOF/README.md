@@ -1,42 +1,13 @@
-# Hello World
+# Project Create an NFT Collection
 
-This Solidity program is a simple "Hello World" program that demonstrates the basic syntax and functionality of the Solidity programming language. The purpose of this program is to serve as a starting point for those who are new to Solidity and want to get a feel for how it works.
+The provided code implements a simple system for managing NFTs (Non-Fungible Tokens). It defines a variable nfts to hold an array of NFT objects. This system demonstrates basic NFT management, including minting and listing NFTs and tracking the total supply.
 
 ## Description
 
-This program is a simple contract written in Solidity, a programming language used for developing smart contracts on the Ethereum blockchain. The contract has a single function that returns the string "Hello World!". This program serves as a simple and straightforward introduction to Solidity programming, and can be used as a stepping stone for more complex projects in the future.
+The code creates a simple NFT management system using JavaScript. It starts by defining an empty array nfts to store NFT objects. The mintNFT function takes four parameters: name, artist, owner, and value, which it uses to create an NFT object. This object is then added to the nfts array. The listNFTs function loops through the nfts array, printing the metadata of each NFT, including its name, artist, owner, and value. This is done using console.log to provide a clear and structured output. The getTotalSupply function returns the number of NFTs that have been minted by returning the length of the nfts array. The code concludes by minting three example NFTs, listing them, and printing the total number of minted NFTs to the console, showcasing the functionality of the implemented system.
 
 ## Getting Started
 
 ### Executing program
 
-To run this program, you can use Remix, an online Solidity IDE. To get started, go to the Remix website at https://remix.ethereum.org/.
-
-Once you are on the Remix website, create a new file by clicking on the "+" icon in the left-hand sidebar. Save the file with a .sol extension (e.g., HelloWorld.sol). Copy and paste the following code into the file:
-
-```javascript
-pragma solidity ^0.8.4;
-
-contract HelloWorld {
-    function sayHello() public pure returns (string memory) {
-        return "Hello World!";
-    }
-}
-
-```
-
-To compile the code, click on the "Solidity Compiler" tab in the left-hand sidebar. Make sure the "Compiler" option is set to "0.8.4" (or another compatible version), and then click on the "Compile HelloWorld.sol" button.
-
-Once the code is compiled, you can deploy the contract by clicking on the "Deploy & Run Transactions" tab in the left-hand sidebar. Select the "HelloWorld" contract from the dropdown menu, and then click on the "Deploy" button.
-
-Once the contract is deployed, you can interact with it by calling the sayHello function. Click on the "HelloWorld" contract in the left-hand sidebar, and then click on the "sayHello" function. Finally, click on the "transact" button to execute the function and retrieve the "Hello World!" message.
-
-## Authors
-
-Metacrafter Chris  
-[@metacraftersio](https://twitter.com/metacraftersio)
-
-
-## License
-
-This project is licensed under the MIT License - see the LICENSE.md file for details
+To run this program, I used Gitpod (https://www.gitpod.io/), but other IDE that has JavaScript extensions should be able to run it.
