@@ -1,114 +1,132 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.9;
+pragma solidity ^0.8.20;
 
-// ERC20 token implementation
-contract MyERC20Token {
-    string public constant name = "MyToken"; // Token name
-    string public constant symbol = "MTK"; // Token symbol
-    uint8 public constant decimals = 18; // Number of decimals
+import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import "@openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata.sol";
+import "@openzeppelin/contracts/utils/Context.sol";
 
-    uint256 private _totalSupply; // Total supply of the token
-    address public owner; // Address of the contract owner
-    mapping(address => uint256) private _balances; // Mapping from address to token balance
-    mapping(address => mapping(address => uint256)) private _allowances; // Mapping from owner to spender to allowance
+// MyToken implements the IERC20 and IERC20Metadata interfaces.
+contract MyToken is Context, IERC20, IERC20Metadata {
+    mapping(address => uint256) private _balances;
+    mapping(address => mapping(address => uint256)) private _allowances;
+    uint256 private _totalSupply;
+    string private _name;
+    string private _symbol;
 
-    // Modifier to restrict functions to the contract owner
-    modifier onlyOwner() {
-        require(msg.sender == owner, "You are not the owner");
-        _;
+    // Set token name and symbol during deployment
+    constructor(string memory name_, string memory symbol_, uint256 initialSupply) {
+        _name = name_;
+        _symbol = symbol_;
+        _mint(_msgSender(), initialSupply);
     }
 
-    // Constructor to set the initial supply and assign it to the deployer
-    constructor(uint256 initialSupply) {
-        owner = msg.sender;
-        _mint(msg.sender, initialSupply);
+    // Return the name of the token
+    function name() public view virtual override returns (string memory) {
+        return _name;
     }
 
-    // Function to get the total supply of the token
-    function totalSupply() external view returns (uint256) {
+    // Return the symbol of the token
+    function symbol() public view virtual override returns (string memory) {
+        return _symbol;
+    }
+
+    // Return the number of decimals
+    function decimals() public view virtual override returns (uint8) {
+        return 18;
+    }
+
+    // Return the total supply of tokens
+    function totalSupply() public view virtual override returns (uint256) {
         return _totalSupply;
     }
 
-    // Function to get the balance of a specific account
-    function balanceOf(address account) external view returns (uint256) {
+    // Return the balance of a specific account
+    function balanceOf(address account) public view virtual override returns (uint256) {
         return _balances[account];
     }
 
-    // Function to transfer tokens to a recipient
-    function transfer(address recipient, uint256 amount) external returns (bool) {
-        _transfer(msg.sender, recipient, amount);
+    // Transfer tokens to a specified address
+    function transfer(address to, uint256 value) public virtual override returns (bool) {
+        address owner = _msgSender();
+        _transfer(owner, to, value);
         return true;
     }
 
-    // Function to get the allowance of a spender for a specific owner
-    function allowance(address tokenOwner, address spender) external view returns (uint256) {
-        return _allowances[tokenOwner][spender];
+    // Return the remaining number of tokens that spender can spend
+    function allowance(address owner, address spender) public view virtual override returns (uint256) {
+        return _allowances[owner][spender];
     }
 
-    // Function to approve a spender to spend a specific amount of tokens
-    function approve(address spender, uint256 amount) external returns (bool) {
-        _approve(msg.sender, spender, amount);
+    // Approve spender to use a certain amount of tokens
+    function approve(address spender, uint256 value) public virtual override returns (bool) {
+        address owner = _msgSender();
+        _approve(owner, spender, value);
         return true;
     }
 
-    // Function to transfer tokens from a sender to a recipient using an allowance
-    function transferFrom(address sender, address recipient, uint256 amount) external returns (bool) {
-        _transfer(sender, recipient, amount);
-        _approve(sender, msg.sender, _allowances[sender][msg.sender] - amount);
+    // Transfer tokens from one address to another using allowance mechanism
+    function transferFrom(address from, address to, uint256 value) public virtual override returns (bool) {
+        address spender = _msgSender();
+        _spendAllowance(from, spender, value);
+        _transfer(from, to, value);
         return true;
     }
 
-    // Function to mint new tokens, only callable by the owner
-    function mint(uint256 amount) external onlyOwner {
-        _mint(msg.sender, amount);
+    // Internal transfer function
+    function _transfer(address from, address to, uint256 value) internal {
+        require(from != address(0), "ERC20: transfer from the zero address");
+        require(to != address(0), "ERC20: transfer to the zero address");
+
+        uint256 fromBalance = _balances[from];
+        require(fromBalance >= value, "ERC20: transfer amount exceeds balance");
+        unchecked {
+            _balances[from] = fromBalance - value;
+        }
+        _balances[to] += value;
+
+        emit Transfer(from, to, value);
     }
 
-    // Function to burn tokens, reducing the total supply
-    function burn(uint256 amount) external {
-        _burn(msg.sender, amount);
+    // Mint new tokens and assign them to an account
+    function _mint(address account, uint256 value) internal {
+        require(account != address(0), "ERC20: mint to the zero address");
+
+        _totalSupply += value;
+        _balances[account] += value;
+        emit Transfer(address(0), account, value);
     }
 
-    // Internal function to handle transfers
-    function _transfer(address sender, address recipient, uint256 amount) internal {
-        require(sender != address(0), "Transfer from the zero address");
-        require(recipient != address(0), "Transfer to the zero address");
-        require(_balances[sender] >= amount, "Insufficient balance");
+    // Burn tokens from an account
+    function _burn(address account, uint256 value) internal {
+        require(account != address(0), "ERC20: burn from the zero address");
 
-        _balances[sender] -= amount;
-        _balances[recipient] += amount;
-        emit Transfer(sender, recipient, amount);
+        uint256 accountBalance = _balances[account];
+        require(accountBalance >= value, "ERC20: burn amount exceeds balance");
+        unchecked {
+            _balances[account] = accountBalance - value;
+        }
+        _totalSupply -= value;
+
+        emit Transfer(account, address(0), value);
     }
 
-    // Internal function to mint new tokens
-    function _mint(address account, uint256 amount) internal {
-        require(account != address(0), "Mint to the zero address");
+    // Set allowance for spender
+    function _approve(address owner, address spender, uint256 value) internal {
+        require(owner != address(0), "ERC20: approve from the zero address");
+        require(spender != address(0), "ERC20: approve to the zero address");
 
-        _totalSupply += amount;
-        _balances[account] += amount;
-        emit Transfer(address(0), account, amount);
+        _allowances[owner][spender] = value;
+        emit Approval(owner, spender, value);
     }
 
-    // Internal function to burn tokens
-    function _burn(address account, uint256 amount) internal {
-        require(account != address(0), "Burn from the zero address");
-        require(_balances[account] >= amount, "Insufficient balance to burn");
-
-        _balances[account] -= amount;
-        _totalSupply -= amount;
-        emit Transfer(account, address(0), amount);
+    // Spend allowance for spender
+    function _spendAllowance(address owner, address spender, uint256 value) internal virtual {
+        uint256 currentAllowance = allowance(owner, spender);
+        if (currentAllowance != type(uint256).max) {
+            require(currentAllowance >= value, "ERC20: insufficient allowance");
+            unchecked {
+                _approve(owner, spender, currentAllowance - value);
+            }
+        }
     }
-
-    // Internal function to approve a spender
-    function _approve(address tokenOwner, address spender, uint256 amount) internal {
-        require(tokenOwner != address(0), "Approve from the zero address");
-        require(spender != address(0), "Approve to the zero address");
-
-        _allowances[tokenOwner][spender] = amount;
-        emit Approval(tokenOwner, spender, amount);
-    }
-
-    // Event to log token transfers
-    event Transfer(address indexed from, address indexed to, uint256 value);
-    // Event to log approvals of token allowances
-    event Approval(address indexed tokenOwner, address indexed spender, uint256 value);
 }
