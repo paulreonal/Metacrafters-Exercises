@@ -1,61 +1,53 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.13;
 
-contract protoContract {
-    // State variables
-    address public owner;    // Address of the contract owner
-    uint256 public value;    
-    bool public active;      // Flag to indicate contract activation status
+contract SchoolGradingSystem {
+    address public admin;
+    mapping(address => uint256) public grades;
+    bool public systemActive;
 
-    // Constructor to initialize contract state
     constructor() {
-        owner = msg.sender;   // Set the contract owner as the deployer
-        value = 0;            // Initialize starting value to 0
-        active = true;        // Contract is initially active
+        admin = msg.sender;
+        systemActive = true;
     }
 
-    // Modifier to allow only the contract owner to execute certain functions
-    modifier onlyOwner() {
-        require(msg.sender == owner, "Not the contract owner");
-        _;  // Continue with the function if the condition is met
+    modifier onlyAdmin() {
+        require(msg.sender == admin, "Not the admin");
+        _;
     }
 
-    // Function to set the value, accessible only by the contract owner
-    function setValue(uint256 _value) public onlyOwner {
-        // Using require() to check for a condition
-        require(_value >= 0, "Value must be non-negative");
-        value = _value;  // Set the value
+    function setGrade(address student, uint256 grade) public onlyAdmin {
+        // Using require() to check for a valid grade
+        require(grade >= 0 && grade <= 100, "Grade must be between 0 and 100");
+        grades[student] = grade;
     }
 
-    // Function to toggle the contract's active status, accessible only by the contract owner
-    function toggleActive() public onlyOwner {
+    function toggleSystemActive() public onlyAdmin {
         // Using assert() to ensure internal logic correctness
-        active = !active;  // Toggle active status
-        assert(active == false || active == true);  // Ensure active flag is valid
+        systemActive = !systemActive;
+        assert(systemActive == false || systemActive == true);
     }
 
-    // Function to demonstrate revert() for error handling, view function
-    function revertProto() public view {
+    function revertIfNotAdmin() public view {
         // Using revert() to handle an error condition
-        if (msg.sender != owner) {
-            revert("You are not the owner");  // Revert with an error message
+        if (msg.sender != admin) {
+            revert("You are not the admin");
         }
     }
 
-    // Function with require(), assert(), and conditional revert() for validation and error handling
-    function protoFunction(uint256 _value) public {
+    function adjustGrade(address student, uint256 increment) public {
         // Using require() to validate inputs
-        require(_value > 0, "Value must be greater than 0");
+        require(increment > 0, "Increment must be greater than 0");
 
         // Some internal logic
-        value += _value;
+        grades[student] += increment;
 
         // Using assert() to ensure internal consistency
-        assert(value >= _value);
+        assert(grades[student] >= increment);
 
         // Conditional revert() for specific error handling
-        if (value > 1000) {
-            revert("Value exceeds the maximum limit of 1000");
+        if (grades[student] > 100) {
+            revert("Grade exceeds the maximum limit of 100");
         }
     }
 }
