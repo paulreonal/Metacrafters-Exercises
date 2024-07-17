@@ -10,3 +10,13 @@ This a Solidity smart contract that exemplifies best practices and key features 
 
 ### Executing program
 To run this program, you can use Ethereum IDE, to run Solidity in a web browser. To get started, go to the Remix website at https://remix.ethereum.org/ then place the file, compile, then deploy.
+
+## Help
+This file is best supported in Ethereum Remix IDE for solana files. You can run this in your local IDE with a setup that supports solana files.
+For other issues, please create an issue in this repository.
+
+## Authors
+Paul Miguel Reonal
+
+## License
+This project is not under any license as it is a student project for learning in Metacrafters.
