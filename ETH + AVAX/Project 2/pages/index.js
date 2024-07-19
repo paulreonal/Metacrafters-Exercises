@@ -7,8 +7,9 @@ export default function HomePage() {
   const [account, setAccount] = useState(undefined);
   const [atm, setATM] = useState(undefined);
   const [balance, setBalance] = useState(undefined);
+  const [amount, setAmount] = useState(0);
 
-  const contractAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
+  const contractAddress = "0x1281dDCA636A939743E659B8f030cCd6A18c9919";
   const atmABI = atm_abi.abi;
 
   const getWallet = async() => {
@@ -104,11 +105,14 @@ export default function HomePage() {
 
   return (
     <main className="container">
-      <header><h1>Welcome to the Metacrafters ATM!</h1></header>
+      <header><h1>School Tuition Blockchain Payment</h1></header>
       {initUser()}
-      <style jsx>{`
+      <style jsx global>{`
+        body {
+          background-color: #FFD1DC; /* Pastel pink color */
+        }
         .container {
-          text-align: center
+          text-align: center;
         }
       `}
       </style>
