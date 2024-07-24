@@ -13,3 +13,13 @@ Overall, this project is aimed to deploy a transaction and to reflect in Avalanc
 To run this program, you can use Ethereum IDE, to run Solidity in a web browser. To get started, go to the Remix website at https://remix.ethereum.org/ then place the file, compile, then deploy.
 
 To see the transaction, make sure to have AVAX in your account to have a successful transaction to be displayed in Avalanche.
+
+## Help
+This file is best supported in Ethereum Remix IDE for solana files. You can run this in your local IDE with a setup that supports solana files.
+For other issues, please create an issue in this repository.
+
+## Authors
+Paul Miguel Reonal
+
+## License
+This project is not under any license as it is a student project for learning in Metacrafters.
