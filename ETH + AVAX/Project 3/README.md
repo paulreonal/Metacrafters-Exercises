@@ -12,7 +12,7 @@ This a Solidity smart contract that exemplifies best practices and key features 
 To run this program, you can use Ethereum IDE, to run Solidity in a web browser. To get started, go to the Remix website at https://remix.ethereum.org/ then place the file, compile, then deploy.
 
 ### Steps to Compile and Deploy
-# 1. Create a New File
+#### 1. Create a New File
 Once you are on the Remix website, create a new file by clicking on the "+" icon in the left-hand sidebar.
 Save the file with a .sol extension (e.g., MyToken.sol).
 Copy and paste the following code into the file:
@@ -47,18 +47,18 @@ contract MyToken is ERC20, Ownable {
     }
 }
 ```
-# 2. Compile the Code
+#### 2. Compile the Code
 Click on the "Solidity Compiler" tab in the left-hand sidebar.
 Make sure the "Compiler" option is set to "0.8.20" (or another compatible version).
 Click on the "Compile MyToken.sol" button.
 
-# 3. Deploy the Contract
+#### 3. Deploy the Contract
 Click on the "Deploy & Run Transactions" tab in the left-hand sidebar.
 Select the MyToken contract from the dropdown menu.
 In the initialSupply field, enter the initial supply of tokens (e.g., 1000).
 Click on the "Deploy" button and confirm the transaction in MetaMask.
 
-# 4. Interact with the Deployed Contract
+#### 4. Interact with the Deployed Contract
 
 Once the contract is deployed, you'll see it under "Deployed Contracts".
 To mint tokens, input the recipient address and the amount, then click on mint.
