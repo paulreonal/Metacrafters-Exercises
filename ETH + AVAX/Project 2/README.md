@@ -30,11 +30,17 @@ Typically at http://localhost:3000/
 2. Open MetaMask and click on the network dropdown at the top.
 
 a. Select "Add Network Manually".
+
 b. Fill in the following details:
+
 c. Network Name: Localhost 8545
+
 d. New RPC URL: http://localhost:8545
+
 e. Chain ID: 1337 (default for Hardhat)
+
 f. Currency Symbol: ETH
+
 g. Click "Save".
 
 ## Help
