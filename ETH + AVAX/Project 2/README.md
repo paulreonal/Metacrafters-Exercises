@@ -1,4 +1,4 @@
-# Project: Smart Contract
+# Project: Grocery Item Smart Contract
 
 This Solidity program is a decentralized application specifically designed for the management of grocery items. It serves as a comprehensive example of how to implement the fundamental features required for listing, purchasing, and overseeing grocery items within a blockchain environment, particularly on the Ethereum network.
 
