@@ -25,6 +25,18 @@ Make sure that you have npm and nodejs in your system. If you already have those
 After this, the project will be running on your localhost. 
 Typically at http://localhost:3000/
 
+## Setting up Metamask
+1. Connect MetaMask to Localhost Network
+2. Open MetaMask and click on the network dropdown at the top.
+
+a. Select "Add Network Manually".
+b. Fill in the following details:
+c. Network Name: Localhost 8545
+d. New RPC URL: http://localhost:8545
+e. Chain ID: 1337 (default for Hardhat)
+f. Currency Symbol: ETH
+g. Click "Save".
+
 ## Help
 A common issue is running the application locally because you have to make sure that the pre-requisites are already downloaded and their paths are already setup.
 It is suggested to run this in Remix 'https://remix.ethereum.org/' to easily run the program without worrying with the pre-requisites and setup.
